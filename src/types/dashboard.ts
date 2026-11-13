@@ -1,4 +1,29 @@
-export type SystemTabKey = 'overview' | 'warroom' | 'finance' | 'attendance' | 'vms' | 'hr';
+export type SystemTabKey = 'overview' | 'warroom' | 'finance' | 'attendance' | 'vms' | 'hr' | 'crm' | 'cms';
+export type UserRole = 'user' | 'admin' | 'developer';
+
+export type SiteKey = 'all' | 'hq' | 'muangthong' | 'phuket' | 'chiangmai';
+
+export interface SiteOption {
+  key: SiteKey;
+  label: string;
+  short: string;
+}
+
+export interface UserAccount {
+  id: string;
+  name: string;
+  email: string;
+  org: string;
+  role: UserRole;
+  status: 'active' | 'inactive';
+  allowedSites: SiteKey[];
+  allowedSystems: SystemTabKey[];
+}
+
+export interface UserPermissions {
+  allowedSites: SiteKey[];
+  allowedSystems: SystemTabKey[];
+}
 
 export interface KPICard {
   id: string;

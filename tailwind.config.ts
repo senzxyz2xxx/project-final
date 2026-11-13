@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        sans: ['Prompt', 'sans-serif'],
       },
       colors: {
         bgMain: '#f0f2f5',

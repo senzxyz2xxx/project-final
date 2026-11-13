@@ -23,7 +23,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       sender: 'ai',
-      text: '🤖 สวัสดีครับ! ผมคือ Nexus LLM Assistant คุณสามารถพิมพ์สั่งปรับแต่ง Widget หรือกรองข้อมูลระบบที่ต้องการได้เลยครับ',
+      text: 'สวัสดีครับ! ผมคือ Nexus AI Assistant คุณสามารถพิมพ์สั่งปรับแต่ง Widget หรือกรองข้อมูลระบบที่ต้องการได้เลยครับ',
     },
   ]);
 
@@ -35,19 +35,23 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
 
     // Simulate AI response
     setTimeout(() => {
-      let reply = '🤖 รับทราบคำสั่ง! กำลังปรับแต่งหน้า Dashboard ให้ตามต้องการครับ';
+      let reply = 'รับทราบคำสั่ง! กำลังปรับแต่งหน้า Dashboard ให้ตามต้องการครับ';
       if (text.includes('VMS') || targetTab === 'vms') {
-        reply = '🏢 สลับหน้าจอเป็นระบบผู้มาติดต่อ (VMS) บจก. ฤทธา สนง.ใหญ่ เรียบร้อยครับ';
+        reply = 'สลับหน้าจอเป็นระบบผู้มาติดต่อ (VMS) เรียบร้อยครับ';
       } else if (text.includes('ลงเวลา') || targetTab === 'attendance') {
-        reply = '⏱️ ปรับการแสดงผลเป็นระบบลงเวลาพนักงาน ไซต์เมืองทอง เรียบร้อยครับ';
+        reply = 'ปรับการแสดงผลเป็นระบบลงเวลาพนักงาน เรียบร้อยครับ';
       } else if (text.includes('War Room') || targetTab === 'warroom') {
-        reply = '🚨 เปิดโหมด War Room รวบรวมข้อมูลสดจากทั้ง 7 ไซต์งานเรียบร้อยครับ';
+        reply = 'เปิดโหมด War Room รวบรวมข้อมูลสดจากทุกระบบ เรียบร้อยครับ';
       } else if (text.includes('การเงิน') || targetTab === 'finance') {
-        reply = '💰 เปลี่ยนข้อมูลเป็นระบบการเงินและงบประมาณเบิกจ่ายเรียบร้อยครับ';
+        reply = 'เปลี่ยนข้อมูลเป็นระบบการเงินและงบประมาณ เรียบร้อยครับ';
       } else if (text.includes('HR') || targetTab === 'hr') {
-        reply = '👥 สลับหน้าจอเป็นระบบบริหารทรัพยากรบุคคล (HR) เรียบร้อยครับ';
+        reply = 'สลับหน้าจอเป็นระบบ HR เรียบร้อยครับ';
+      } else if (text.includes('CRM') || targetTab === 'crm') {
+        reply = 'สลับหน้าจอเป็นระบบ CRM (ลูกค้าสัมพันธ์) เรียบร้อยครับ';
+      } else if (text.includes('CMS') || targetTab === 'cms') {
+        reply = 'สลับหน้าจอเป็นระบบ CMS (จัดการเนื้อหา) เรียบร้อยครับ';
       } else if (text.includes('ภาพรวม') || targetTab === 'overview') {
-        reply = '🔄 รีเซ็ตกลับเป็นภาพรวม General metrics (Redondo Brand) ตามแบบฉบับแล้วครับ';
+        reply = 'รีเซ็ตกลับเป็นภาพรวมระบบ เรียบร้อยครับ';
       }
 
       setMessages((prev) => [...prev, { sender: 'ai', text: reply }]);
@@ -65,8 +69,10 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-              ✨
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
             </div>
             <div>
               <h3 className="font-bold text-slate-900 text-sm">Nexus AI Assistant</h3>
@@ -92,31 +98,31 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
               onClick={() => handleSend('เปิดโหมด War Room รวม 7 ไซต์งาน', 'warroom')}
               className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 text-xs text-slate-700 font-medium smooth-transition border border-slate-100"
             >
-              🚨 เปิดโหมด War Room (รวม 7 ไซต์งาน)
+              เปิดโหมด War Room (รวม 7 ไซต์งาน)
             </button>
             <button
               onClick={() => handleSend('แสดงระบบการเงิน & เบิกจ่ายโครงการ', 'finance')}
               className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 text-xs text-slate-700 font-medium smooth-transition border border-slate-100"
             >
-              💰 สลับเป็นระบบการเงิน (Finance Overview)
+              สลับเป็นระบบการเงิน (Finance Overview)
             </button>
             <button
               onClick={() => handleSend('ปรับ Dashboard เป็นระบบลงเวลาไซต์เมืองทอง', 'attendance')}
               className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 text-xs text-slate-700 font-medium smooth-transition border border-slate-100"
             >
-              ⏱️ แสดงข้อมูลระบบลงเวลาพนักงาน ไซต์เมืองทอง
+              แสดงข้อมูลระบบลงเวลาพนักงาน ไซต์เมืองทอง
             </button>
             <button
               onClick={() => handleSend('ปรับเป็นระบบผู้มาติดต่อ VMS สนง.ใหญ่', 'vms')}
               className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 text-xs text-slate-700 font-medium smooth-transition border border-slate-100"
             >
-              🏢 ปรับเป็นระบบ VMS (ผู้มาติดต่อ สนง.ใหญ่)
+              ปรับเป็นระบบ VMS (ผู้มาติดต่อ สนง.ใหญ่)
             </button>
             <button
               onClick={() => handleSend('รีเซ็ตกลับเป็นภาพรวม General metrics', 'overview')}
               className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 text-xs text-slate-700 font-medium smooth-transition border border-slate-100"
             >
-              🔄 รีเซ็ตกลับเป็นภาพรวม (Redondo Brand)
+              รีเซ็ตกลับเป็นภาพรวมระบบ
             </button>
           </div>
         </div>

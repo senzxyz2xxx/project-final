@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Sidebar } from '../components/Sidebar';
+import React, { useState, useCallback } from 'react';
+import { Sidebar, SITES } from '../components/Sidebar';
 import { Header } from '../components/Header';
 import { MetricCards } from '../components/MetricCards';
 import { SalesReturnsChart } from '../components/SalesReturnsChart';
@@ -10,53 +10,116 @@ import { SessionsGauge } from '../components/SessionsGauge';
 import { TrafficSourcesCard } from '../components/TrafficSourcesCard';
 import { RegionalSalesTable } from '../components/RegionalSalesTable';
 import { AIAssistantDrawer } from '../components/AIAssistantDrawer';
+import { LoginScreen } from '../components/LoginScreen';
+import { WarRoomMultiPanel } from '../components/WarRoomMultiPanel';
+import { AdminPanel } from '../components/AdminPanel';
+import { DeveloperPanel } from '../components/DeveloperPanel';
 import { mockSystemsData } from '../data/mockData';
-import { SystemTabKey } from '../types/dashboard';
+import { SystemTabKey, UserRole, SiteKey, UserAccount } from '../types/dashboard';
+import { defaultUsers, ALL_SYSTEMS_LIST, ALL_SITES_LIST } from '../data/permissions';
 
 export default function DashboardPage() {
-  const [currentTab, setCurrentTab] = useState<SystemTabKey>('overview');
-  const [isAIOpen, setIsAIOpen] = useState(false);
+  const [role, setRole]               = useState<UserRole | null>(null);
+  const [currentTab, setCurrentTab]   = useState<SystemTabKey>('overview');
+  const [currentSite, setCurrentSite] = useState<SiteKey>('hq');
+  const [isAIOpen, setIsAIOpen]       = useState(false);
+  const [editMode]                     = useState(false);
 
-  // Retrieve mock data for current system
-  const currentData = mockSystemsData[currentTab] || mockSystemsData.overview;
+  const [users, setUsers] = useState<UserAccount[]>(defaultUsers);
+  const [activeUserId, setActiveUserId] = useState<string>('u3');
+
+  const activeUser = users.find((u) => u.id === activeUserId);
+  const userPermissions = activeUser
+    ? { allowedSites: activeUser.allowedSites, allowedSystems: activeUser.allowedSystems }
+    : { allowedSites: ALL_SITES_LIST, allowedSystems: ALL_SYSTEMS_LIST };
+
+  const handleSelectRole = useCallback((r: UserRole) => {
+    setRole(r);
+    if (r === 'user') {
+      setActiveUserId('u1');
+      setCurrentTab('overview');
+    }
+  }, []);
+
+  const handleUpdateUser = useCallback((userId: string, updates: Partial<Pick<UserAccount, 'allowedSites' | 'allowedSystems' | 'status'>>) => {
+    setUsers((prev) => prev.map((u) => u.id === userId ? { ...u, ...updates } : u));
+  }, []);
+
+  const handleSelectTab = useCallback((tab: SystemTabKey) => {
+    if (tab === 'warroom' || tab === 'overview') {
+      setCurrentTab(tab);
+      return;
+    }
+    if (role === 'user' && !userPermissions.allowedSystems.includes(tab)) {
+      return;
+    }
+    setCurrentTab(tab);
+  }, [role, userPermissions.allowedSystems]);
+
+  if (!role) return <LoginScreen onSelectRole={handleSelectRole} />;
+  if (role === 'admin') return (
+    <AdminPanel
+      onBack={() => setRole(null)}
+      users={users}
+      onUpdateUser={handleUpdateUser}
+    />
+  );
+  if (role === 'developer') return <DeveloperPanel onBack={() => setRole(null)} />;
+
+  // War Room: fullscreen overlay
+  if (currentTab === 'warroom') {
+    return (
+      <WarRoomMultiPanel
+        onNavigate={(tab) => { setCurrentTab(tab); }}
+        onExit={() => setCurrentTab('overview')}
+      />
+    );
+  }
+
+  // User Dashboard
+  const currentData = mockSystemsData[currentTab] ?? mockSystemsData.overview;
+  const activeSite = SITES.find((s) => s.key === currentSite) ?? SITES[0];
 
   const handleApplyAIPrompt = (promptText: string, targetTab?: SystemTabKey) => {
-    if (targetTab) {
-      setCurrentTab(targetTab);
-    } else {
-      if (promptText.includes('VMS')) setCurrentTab('vms');
-      else if (promptText.includes('ลงเวลา')) setCurrentTab('attendance');
-      else if (promptText.includes('War Room')) setCurrentTab('warroom');
-      else if (promptText.includes('การเงิน')) setCurrentTab('finance');
-      else if (promptText.includes('HR')) setCurrentTab('hr');
-      else setCurrentTab('overview');
-    }
+    if (targetTab) { handleSelectTab(targetTab); return; }
+    if (promptText.includes('VMS'))      { handleSelectTab('vms');        return; }
+    if (promptText.includes('ลงเวลา'))   { handleSelectTab('attendance'); return; }
+    if (promptText.includes('War Room')) { handleSelectTab('warroom');    return; }
+    if (promptText.includes('การเงิน'))  { handleSelectTab('finance');    return; }
+    if (promptText.includes('HR'))       { handleSelectTab('hr');         return; }
+    if (promptText.includes('CRM'))      { handleSelectTab('crm');       return; }
+    if (promptText.includes('CMS'))      { handleSelectTab('cms');       return; }
+    setCurrentTab('overview');
   };
 
   return (
     <div className="w-full max-w-[1580px] flex gap-4 xl:gap-5 items-stretch relative">
-      {/* 1. Sidebar Matching User Uploaded Screenshot */}
       <Sidebar
         currentTab={currentTab}
-        onSelectTab={(tab) => setCurrentTab(tab)}
+        currentSite={currentSite}
+        role={role}
+        onSelectTab={handleSelectTab}
+        onSelectSite={setCurrentSite}
         onOpenAI={() => setIsAIOpen(true)}
+        onBack={() => setRole(null)}
+        allowedSystems={userPermissions.allowedSystems}
+        allowedSites={userPermissions.allowedSites}
       />
 
-      {/* 2. Main Content Area */}
       <main className="flex-1 flex flex-col gap-4 min-w-0">
-        {/* Top Header Bar */}
         <Header
           title={currentData.title}
           brand={currentData.brand}
+          siteName={activeSite.label}
           currentTab={currentTab}
-          onSelectTab={(tab) => setCurrentTab(tab)}
+          editMode={editMode}
+          onToggleEditMode={() => {}}
+          onSelectTab={handleSelectTab}
           onOpenAI={() => setIsAIOpen(true)}
         />
 
-        {/* Top 5 Metric Cards */}
         <MetricCards kpis={currentData.kpis} />
 
-        {/* Middle Section: Sales & Returns Chart + Funnel Bar Chart */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           <SalesReturnsChart
             title={currentData.chart.title}
@@ -78,7 +141,6 @@ export default function DashboardPage() {
           />
         </section>
 
-        {/* Bottom Section: Sessions Gauge + Traffic Sources + Regional Sales */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
           <SessionsGauge
             title={currentData.sessions.title}
@@ -102,22 +164,20 @@ export default function DashboardPage() {
           />
         </section>
 
-        {/* Footer */}
-        <footer className="pt-2 pb-4 text-center text-xs text-slate-400 flex items-center justify-between">
-          <span>The Nexus Dashboard Framework • Next.js + Tailwind CSS</span>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsAIOpen(true)}
-              className="text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1"
-            >
-              <span>✨</span>
-              <span>Nexus AI Prompt Assistant</span>
-            </button>
-          </div>
+        <footer className="pt-2 pb-4 text-xs text-slate-400 flex items-center justify-between">
+          <span>The Nexus Dashboard Framework &bull; Next.js + Tailwind CSS</span>
+          <button
+            onClick={() => setIsAIOpen(true)}
+            className="text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1.5"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span>Nexus AI Prompt Assistant</span>
+          </button>
         </footer>
       </main>
 
-      {/* 3. AI Assistant Slide-over Drawer */}
       <AIAssistantDrawer
         isOpen={isAIOpen}
         onClose={() => setIsAIOpen(false)}

@@ -719,5 +719,165 @@ export const mockSystemsData: Record<SystemTabKey, DashboardSystemData> = {
         { region: 'ไซต์เชียงใหม่เมโทร', orders: 190, trend: '↓', isUp: false, revenue: 'ขาด 5 อัตรา' }
       ]
     }
+  },
+
+  // 7. ระบบ CRM (Customer Relationship Management)
+  crm: {
+    key: 'crm',
+    brand: 'บจก. ฤทธา - ฝ่ายขายและการตลาด',
+    title: 'ระบบบริหารความสัมพันธ์ลูกค้า (CRM)',
+    subtitle: 'ติดตาม Leads, Pipeline การขาย, โอกาสทางธุรกิจ และความพึงพอใจลูกค้า',
+    kpis: [
+      { id: 'kpi-1', label: 'ลูกค้าใหม่เดือนนี้',   value: '84 ราย',     badge: '+22%', arrow: '↑', sub: 'สูงกว่าเดือนก่อน 22%',       isGreen: true  },
+      { id: 'kpi-2', label: 'Leads ที่เปิดอยู่',     value: '312 Leads',  badge: '+15%', arrow: '↑', sub: 'มูลค่ารวม ฿28.4M Pipeline',   isGreen: true  },
+      { id: 'kpi-3', label: 'ปิดการขายได้',          value: '48 Deal',    badge: '+8%',  arrow: '↑', sub: 'Conversion Rate 15.4%',       isGreen: true  },
+      { id: 'kpi-4', label: 'ยอดขายรวมเดือนนี้',    value: '฿18.6M',     badge: '+31%', arrow: '↑', sub: 'เกินเป้าไตรมาส Q4',           isGreen: true  },
+      { id: 'kpi-5', label: 'Customer Satisfaction', value: '4.7 / 5.0',  badge: '+0.3', arrow: '↑', sub: 'จาก 420 Feedback ล่าสุด',     isGreen: true  }
+    ],
+    chart: {
+      title: 'Sales Pipeline vs Closed Deals',
+      sub: 'มูลค่า Pipeline รายสัปดาห์เทียบยอดปิดการขายสำเร็จ',
+      legend1: 'Pipeline (Leads)',
+      legendVal1: '฿28.4M',
+      legendBadge1: '+15%',
+      legend2: 'Closed Deals',
+      legendVal2: '฿18.6M',
+      legendBadge2: '+31%',
+      tooltipDay: 'Fri',
+      tooltipTime: '14 March ปิดยอด',
+      tooltipVal: '฿18.6M ปิดการขาย',
+      days: [
+        { day: 'Mon', date: '10 March', sales: 12400, returns: 6800,  salesFormatted: '฿12.4M' },
+        { day: 'Tue', date: '11 March', sales: 15800, returns: 9200,  salesFormatted: '฿15.8M' },
+        { day: 'Wed', date: '12 March', sales: 18200, returns: 11400, salesFormatted: '฿18.2M' },
+        { day: 'Thu', date: '13 March', sales: 22400, returns: 14800, salesFormatted: '฿22.4M' },
+        { day: 'Fri', date: '14 March ปิดยอด', sales: 28400, returns: 18600, salesFormatted: '฿28.4M' },
+        { day: 'Sat', date: '15 March', sales: 14200, returns: 7400,  salesFormatted: '฿14.2M' },
+        { day: 'Sun', date: '16 March', sales: 8600,  returns: 3200,  salesFormatted: '฿8.6M'  }
+      ]
+    },
+    funnel: {
+      title: 'Sales Conversion Funnel',
+      sub: 'กระบวนการตั้งแต่ Lead เข้ามาจนถึงปิดการขายสำเร็จ',
+      conversionRate: '15%',
+      conversionBadge: '+3%',
+      stages: [
+        { name: 'Leads',          value: 312, percentage: 100 },
+        { name: 'Qualified',      value: 180, percentage: 58  },
+        { name: 'Proposal Sent',  value: 95,  percentage: 30  },
+        { name: 'Closed Won',     value: 48,  percentage: 15  }
+      ]
+    },
+    sessions: {
+      title: 'Sales Team Performance',
+      uniqueUsers: '12 คน',
+      uniqueLabel: 'Sales ที่ Active เดือนนี้',
+      totalSessions: '฿28.4M',
+      totalLabel: 'Pipeline Value รวม',
+      gaugePercentage: 86
+    },
+    traffic: {
+      title: 'Lead Sources',
+      spend: '312 Leads',
+      cpa: '15.4%',
+      impressions: '฿28.4M',
+      clicks: '4.7 / 5.0',
+      sources: [
+        { name: 'Referral / แนะนำ',   count: 112, color: 'bg-emerald-500', widthPercent: 36 },
+        { name: 'Website / Online',   count: 84,  color: 'bg-sky-500',     widthPercent: 27 },
+        { name: 'Cold Call / Direct', count: 62,  color: 'bg-amber-400',   widthPercent: 20 },
+        { name: 'Trade Show / Event', count: 38,  color: 'bg-purple-500',  widthPercent: 12 },
+        { name: 'อื่น ๆ',             count: 16,  color: 'bg-pink-400',    widthPercent: 5  }
+      ]
+    },
+    regions: {
+      title: 'Deals by Account Type',
+      rows: [
+        { region: 'งานก่อสร้างขนาดใหญ่',  orders: 18, trend: '↑', isUp: true,  revenue: '฿9,840,000'  },
+        { region: 'งาน Fit-out / ตกแต่ง', orders: 14, trend: '↑', isUp: true,  revenue: '฿4,620,000'  },
+        { region: 'งาน Maintenance',       orders: 10, trend: '↑', isUp: true,  revenue: '฿2,480,000'  },
+        { region: 'งาน Consulting',        orders: 6,  trend: '↓', isUp: false, revenue: '฿1,660,000'  }
+      ]
+    }
+  },
+
+  // 8. ระบบ CMS (Content Management System)
+  cms: {
+    key: 'cms',
+    brand: 'บจก. ฤทธา - สื่อสารองค์กร',
+    title: 'ระบบจัดการเนื้อหาองค์กร (CMS)',
+    subtitle: 'บริหารจัดการบทความ ข่าวสาร ประกาศภายใน และสื่อดิจิทัลขององค์กร',
+    kpis: [
+      { id: 'kpi-1', label: 'บทความทั้งหมด',         value: '1,842 ชิ้น', badge: '+12%', arrow: '↑', sub: 'เพิ่มขึ้น 12% เดือนนี้',       isGreen: true  },
+      { id: 'kpi-2', label: 'เผยแพร่วันนี้',          value: '8 บทความ',  badge: '+3',   arrow: '↑', sub: 'ผ่านการอนุมัติครบถ้วน',         isGreen: true  },
+      { id: 'kpi-3', label: 'ยอดเข้าชมรวมเดือนนี้',   value: '94,280 ครั้ง', badge: '+28%', arrow: '↑', sub: 'สูงสุดในรอบปี',              isGreen: true  },
+      { id: 'kpi-4', label: 'บรรณาธิการ Active',      value: '14 คน',     badge: '-2',   arrow: '↓', sub: 'มีการลาออก 2 คนเดือนก่อน',    isGreen: false },
+      { id: 'kpi-5', label: 'รออนุมัติเผยแพร่',       value: '23 ชิ้น',   badge: '+8',   arrow: '↑', sub: 'ต้องตรวจสอบก่อน Publish',       isGreen: false }
+    ],
+    chart: {
+      title: 'Content Published vs Page Views',
+      sub: 'จำนวนบทความที่เผยแพร่เปรียบเทียบยอดเข้าชมรายสัปดาห์',
+      legend1: 'บทความที่เผยแพร่',
+      legendVal1: '42 ชิ้น',
+      legendBadge1: '+12%',
+      legend2: 'ยอดเข้าชม (พัน)',
+      legendVal2: '94.3K',
+      legendBadge2: '+28%',
+      tooltipDay: 'Fri',
+      tooltipTime: '14 March สรุปสัปดาห์',
+      tooltipVal: '94,280 ครั้ง',
+      days: [
+        { day: 'Mon', date: '10 March', sales: 6,  returns: 11200, salesFormatted: '6 ชิ้น'  },
+        { day: 'Tue', date: '11 March', sales: 9,  returns: 14800, salesFormatted: '9 ชิ้น'  },
+        { day: 'Wed', date: '12 March', sales: 7,  returns: 12400, salesFormatted: '7 ชิ้น'  },
+        { day: 'Thu', date: '13 March', sales: 12, returns: 18600, salesFormatted: '12 ชิ้น' },
+        { day: 'Fri', date: '14 March สรุป', sales: 8, returns: 94280, salesFormatted: '8 ชิ้น' },
+        { day: 'Sat', date: '15 March', sales: 4,  returns: 8200,  salesFormatted: '4 ชิ้น'  },
+        { day: 'Sun', date: '16 March', sales: 2,  returns: 4800,  salesFormatted: '2 ชิ้น'  }
+      ]
+    },
+    funnel: {
+      title: 'Content Workflow',
+      sub: 'ขั้นตอนการผลิตเนื้อหาตั้งแต่ Draft จนถึง Published',
+      conversionRate: '78%',
+      conversionBadge: '+5%',
+      stages: [
+        { name: 'Draft',     value: 180, percentage: 100 },
+        { name: 'In Review', value: 145, percentage: 80  },
+        { name: 'Approved',  value: 118, percentage: 65  },
+        { name: 'Published', value: 95,  percentage: 53  }
+      ]
+    },
+    sessions: {
+      title: 'Content Engagement',
+      uniqueUsers: '94,280',
+      uniqueLabel: 'ยอดเข้าชมเดือนนี้',
+      totalSessions: '1,842',
+      totalLabel: 'บทความทั้งหมดในระบบ',
+      gaugePercentage: 68
+    },
+    traffic: {
+      title: 'Content Categories',
+      spend: '1,842 ชิ้น',
+      cpa: '5.2 นาที',
+      impressions: '94,280 ครั้ง',
+      clicks: '78% Publish rate',
+      sources: [
+        { name: 'ข่าวสารองค์กร',     count: 680, color: 'bg-sky-500',     widthPercent: 37 },
+        { name: 'โปรเจกต์ & ผลงาน',  count: 420, color: 'bg-emerald-500', widthPercent: 23 },
+        { name: 'ประกาศภายใน',        count: 380, color: 'bg-amber-400',   widthPercent: 21 },
+        { name: 'บทความวิชาการ',       count: 240, color: 'bg-purple-500',  widthPercent: 13 },
+        { name: 'มีเดีย & รูปภาพ',    count: 122, color: 'bg-pink-400',    widthPercent: 7  }
+      ]
+    },
+    regions: {
+      title: 'Views by Department',
+      rows: [
+        { region: 'ทีมวิศวกรรม & ไซต์งาน', orders: 1240, trend: '↑', isUp: true,  revenue: '34,820 ครั้ง' },
+        { region: 'ฝ่ายบริหาร & HR',        orders: 820,  trend: '↑', isUp: true,  revenue: '22,480 ครั้ง' },
+        { region: 'ฝ่ายขายและการตลาด',      orders: 640,  trend: '↑', isUp: true,  revenue: '18,640 ครั้ง' },
+        { region: 'ฝ่ายการเงินและบัญชี',    orders: 380,  trend: '↓', isUp: false, revenue: '10,240 ครั้ง' }
+      ]
+    }
   }
 };
